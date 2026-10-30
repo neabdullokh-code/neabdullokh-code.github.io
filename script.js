@@ -1,5 +1,7 @@
 /* abdullokh.cpp — everything that makes the page feel like an IDE:
-   line cursor, mood switch (theme + rain + flowers), and a small terminal. */
+   line numbers and cursor, a code fold, the mood switch (theme + rain + flowers)
+   and a small terminal. The C++ on the page is real: with the two headers it
+   includes, `clang++ -std=c++17 -Wall` prints exactly what ▶ Run shows. */
 (() => {
     'use strict';
 
@@ -7,28 +9,30 @@
     const $ = (sel, el = document) => el.querySelector(sel);
     const $$ = (sel, el = document) => [...el.querySelectorAll(sel)];
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const finePointer = window.matchMedia('(pointer: fine)');
     const wait = ms => new Promise(resolve => setTimeout(resolve, reduceMotion.matches ? 0 : ms));
     const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const own = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
+    const smooth = () => (reduceMotion.matches ? 'auto' : 'smooth');
 
     const store = {
         get(key) { try { return localStorage.getItem(key); } catch (e) { return null; } },
         set(key, value) { try { localStorage.setItem(key, value); } catch (e) { /* private mode */ } },
     };
 
-    /* ---------- Lines ---------- */
-
     const code = $('#code');
-    const lines = $$('.l', code);
-    lines.forEach((line, i) => { line.dataset.n = i + 1; });
 
-    // Visible text of a node, without screen-reader-only names, tooltips and gutter icons.
+    /* ---------- Text helpers ---------- */
+
+    // The text a line shows, as it would be in the .cpp file
+    // (no screen-reader names, tooltips, gutter icons or hidden fold parts).
     function visibleText(node) {
         const copy = node.cloneNode(true);
-        $$('.sr, .tip, .gi, .star, .hint', copy).forEach(el => el.remove());
+        $$('.sr, .tip, .gi, .star, .hint, [hidden]', copy).forEach(el => el.remove());
         return copy.textContent;
     }
 
-    // Readable text (what a person would say out loud): drops decorative code tokens.
+    // What a person would read out loud: drops decorative code tokens.
     function plainText(node) {
         const copy = node.cloneNode(true);
         $$('[aria-hidden="true"], .tip', copy).forEach(el => el.remove());
@@ -36,11 +40,37 @@
     }
 
     const indentOf = line => Number(getComputedStyle(line).getPropertyValue('--i')) || 0;
+    const lineOf = target => (target.classList.contains('l') ? target : $('.l', target));
 
-    $$('[data-line-of]').forEach(el => {
-        const target = document.getElementById(el.dataset.lineOf);
-        if (target) el.textContent = ':' + target.dataset.n;
-    });
+    // Column of the squiggly word if the line has one, otherwise the first character.
+    function columnOf(line) {
+        const word = $('.squiggle', line);
+        if (!word) return indentOf(line) * 4 + 1;
+        const range = document.createRange();
+        range.setStart(line, 0);
+        range.setEndBefore(word);
+        const before = document.createElement('div');
+        before.append(range.cloneContents());
+        return indentOf(line) * 4 + visibleText(before).length + 1;
+    }
+
+    /* ---------- Line numbers ---------- */
+
+    // Mirrors the CSS counter: every .l is one line, a closed fold adds its hidden lines.
+    function renumber() {
+        let n = 0;
+        for (const el of $$('.l, .fold-gap', code)) {
+            if (el.classList.contains('fold-gap')) {
+                if (!el.hidden) n += Number(el.dataset.lines) || 0;
+            } else {
+                el.dataset.n = ++n;
+            }
+        }
+        $$('[data-line-of]').forEach(el => {
+            const target = document.getElementById(el.dataset.lineOf);
+            if (target) el.textContent = `:${target.dataset.n}:${columnOf(target)}`;
+        });
+    }
 
     /* ---------- Cursor: click a line, see Ln/Col in the status bar ---------- */
 
@@ -64,7 +94,7 @@
             const range = document.caretRangeFromPoint(x, y);
             if (range) { node = range.startContainer; offset = range.startOffset; }
         }
-        if (!node || !line.contains(node)) return 1;
+        if (!node || !line.contains(node)) return indentOf(line) * 4 + 1;
         const range = document.createRange();
         range.setStart(line, 0);
         range.setEnd(node, offset);
@@ -79,18 +109,31 @@
     });
 
     function goTo(target) {
-        const line = target.classList.contains('l') ? target : $('.l', target);
+        const line = lineOf(target);
         if (!line) return;
-        line.scrollIntoView({ block: 'center', behavior: reduceMotion.matches ? 'auto' : 'smooth' });
-        setCursor(line, indentOf(line) * 4 + 1);
+        line.scrollIntoView({ block: 'center', behavior: smooth() });
+        setCursor(line, columnOf(line));
         line.classList.remove('flash');
         void line.offsetWidth; // restart the animation
         line.classList.add('flash');
     }
 
-    $$('[data-goto]').forEach(btn => btn.addEventListener('click', () => {
-        const target = document.getElementById(btn.dataset.goto);
+    // One listener for every "jump to line" link, including the ones the terminal prints later.
+    document.addEventListener('click', e => {
+        const link = e.target.closest('[data-goto]');
+        if (!link) return;
+        const target = document.getElementById(link.dataset.goto);
         if (target) goTo(target);
+    });
+
+    // Explorer: opening a picture shows where the code uses it.
+    $$('[data-reveal]').forEach(btn => btn.addEventListener('click', () => {
+        const card = $(`[data-pick="${btn.dataset.reveal}"]`);
+        if (!card) return;
+        card.scrollIntoView({ block: 'center', behavior: smooth() });
+        card.classList.remove('flash');
+        void card.offsetWidth;
+        card.classList.add('flash');
     }));
 
     /* ---------- Outline + breadcrumbs follow the scroll ---------- */
@@ -120,13 +163,95 @@
     code.addEventListener('scroll', queueOutline, { passive: true });
     window.addEventListener('scroll', queueOutline, { passive: true });
     window.addEventListener('resize', queueOutline);
-    updateOutline();
 
     outlineLinks.forEach(link => link.addEventListener('click', () => {
         const target = $(link.getAttribute('href'));
-        const line = target && (target.classList.contains('l') ? target : $('.l', target));
+        const line = target && lineOf(target);
         if (line) setCursor(line, indentOf(line) * 4 + 1);
     }));
+
+    /* ---------- Page content (the program prints it, the fold is built from it) ---------- */
+
+    const page = {
+        title: () => plainText($('.doc-title')),
+        intro: () => plainText($('.doc-intro')),
+        section: id => plainText($(`#${id} .sec-title`)),
+        classes: () => $$('#classes li').map(plainText),
+        movies: () => $$('#movies li a').map(a => ({ title: plainText(a), href: a.href })),
+        neighbors: () => plainText($('#neighbors .fact')),
+    };
+
+    /* ---------- The fold: introduce() is real C++ ---------- */
+
+    const span = (cls, text) => `<span class="${cls}">${esc(text)}</span>`;
+    const cppString = text => '"' + text.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n') + '"';
+    const str = text => span('s', cppString(text));
+    const chr = text => span('s', `'${text}'`);
+    const num = text => span('n', text);
+    const kw = text => span('k', text);
+    const ty = text => span('t', text);
+
+    // The body of introduce(), line by line: [indent, html]. Built from the page,
+    // so it always prints exactly what the page says.
+    function introduceBody() {
+        const cout = `${ty('std')}::cout`;
+        const more = ' '.repeat(10); // continuation lines line up under the first <<
+        const names = page.classes().map(str).join(', ');
+        return [
+            [2, `${cout} &lt;&lt; ${str(page.title() + '\n')}`],
+            [2, `${more}&lt;&lt; ${str('I love ')} &lt;&lt; passion &lt;&lt; ${str('.\n\n')}`],
+            [2, `${more}&lt;&lt; ${str(page.section('classes') + ':\n')};`],
+            [2, `${kw('for')} (${kw('const char')}* name : {${names}})`],
+            [3, `${cout} &lt;&lt; ${str('  • ')} &lt;&lt; name &lt;&lt; ${chr('\\n')};`],
+            [2, `${cout} &lt;&lt; ${str('\n' + page.section('movies') + ':\n')};`],
+            [2, `${kw('for')} (${ty('std')}::${ty('size_t')} i = ${num('0')}; i &lt; ${ty('std')}::${span('f', 'size')}(favoriteMovies); ++i)`],
+            [3, `${cout} &lt;&lt; ${str('  ')} &lt;&lt; i + ${num('1')} &lt;&lt; ${str('. ')} &lt;&lt; favoriteMovies[i] &lt;&lt; ${chr('\\n')};`],
+            [2, `${cout} &lt;&lt; ${str('\n' + page.section('moods') + ': ')} &lt;&lt; (mood == ${ty('Mood')}::${span('e', 'HAPPY')} ? ${str('HAPPY :)')} : ${str('SAD :(')}) &lt;&lt; ${str('\n\n')}`],
+            [2, `${more}&lt;&lt; ${str(page.section('neighbors') + ':\n')}`],
+            [2, `${more}&lt;&lt; ${str('  ' + page.neighbors() + '\n')};`],
+            [1, '}'],
+        ];
+    }
+
+    const foldLine = $('#introduce');
+    const foldGap = $('.fold-gap');
+    const foldButtons = $$('[data-fold]');
+
+    // Keep the "hidden lines" count honest even if the body above changes.
+    const hiddenLines = introduceBody().length;
+    foldGap.dataset.lines = hiddenLines;
+    foldGap.style.counterIncrement = `line ${hiddenLines}`;
+
+    function setFold(open) {
+        $$('.fold-body', code).forEach(el => el.remove());
+        if (open) {
+            foldLine.after(...introduceBody().map(([indent, html]) => {
+                const row = document.createElement('div');
+                row.className = 'l fold-body';
+                row.style.setProperty('--i', indent);
+                row.innerHTML = html;
+                return row;
+            }));
+        }
+        foldGap.hidden = open;
+        $$('.fold-pill, .fold-close', foldLine).forEach(el => { el.hidden = open; });
+        foldLine.classList.toggle('is-open', open);
+        foldButtons.forEach(btn => {
+            btn.setAttribute('aria-expanded', String(open));
+            if (btn.classList.contains('gi-fold')) {
+                btn.setAttribute('aria-label', open ? 'Fold introduce()' : 'Unfold introduce()');
+                btn.title = open ? 'Fold' : 'Unfold';
+            }
+        });
+        renumber();
+    }
+
+    foldButtons.forEach(btn => btn.addEventListener('click', () => {
+        setFold(!foldLine.classList.contains('is-open'));
+    }));
+
+    renumber();
+    updateOutline();
 
     /* ---------- Rain (sad mode only) ---------- */
 
@@ -285,6 +410,12 @@
 
     setMood(MOODS.includes(root.dataset.mood) ? root.dataset.mood : 'happy');
 
+    /* ---------- Neighbors tooltip: Escape hides it ---------- */
+
+    $('.squiggle').addEventListener('keydown', e => {
+        if (e.key === 'Escape') e.currentTarget.blur();
+    });
+
     /* ---------- Tashkent clock ---------- */
 
     const clock = $('#clock');
@@ -305,10 +436,8 @@
 
     function showPane(name) {
         Object.keys(tabs).forEach(key => {
-            const on = key === name;
-            tabs[key].setAttribute('aria-selected', String(on));
-            tabs[key].tabIndex = on ? 0 : -1;
-            panes[key].hidden = !on;
+            tabs[key].setAttribute('aria-selected', String(key === name));
+            panes[key].hidden = key !== name;
         });
         setCollapsed(false);
     }
@@ -321,6 +450,12 @@
 
     tabs.term.addEventListener('click', () => showPane('term'));
     tabs.problems.addEventListener('click', () => showPane('problems'));
+    $('.panel-tabs').addEventListener('keydown', e => {
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+        const next = e.target === tabs.term ? 'problems' : 'term';
+        showPane(next);
+        tabs[next].focus();
+    });
     panelMin.addEventListener('click', () => setCollapsed(!panel.classList.contains('is-min')));
 
     /* ---------- Terminal ---------- */
@@ -329,22 +464,28 @@
     const out = $('#termOut');
     const form = $('#termForm');
     const input = $('#termInput');
-    const PROMPT = 'abdullokh@iut:~$';
     const runBtn = $('#runBtn');
+    const PROMPT = 'abdullokh@iut:~$';
+    const GITHUB = 'https://github.com/neabdullokh-code';
     const history = [];
     let historyAt = 0;
     let queue = Promise.resolve();
     let busy = 0;
+    let built = null; // the mood the binary was compiled with; null = not compiled yet
 
     // Terminal jobs run one after another, never interleaved.
     function enqueue(job) {
         busy++;
         runBtn.setAttribute('aria-busy', 'true');
+        out.setAttribute('aria-busy', 'true'); // screen readers wait for the whole output
         queue = queue.then(job).catch(err => {
             print(esc(String(err)), 'o-err');
         }).finally(() => {
             busy--;
-            if (!busy) runBtn.removeAttribute('aria-busy');
+            if (!busy) {
+                runBtn.removeAttribute('aria-busy');
+                out.removeAttribute('aria-busy');
+            }
         });
         return queue;
     }
@@ -382,42 +523,32 @@
         await wait(160);
     }
 
-    // Everything the program "prints" is read from the page itself,
-    // so editing the HTML is enough to change the output.
-    const page = {
-        title: () => plainText($('.doc-title')),
-        intro: () => plainText($('.doc-intro')),
-        section: id => plainText($(`#${id} .sec-title`)),
-        classes: () => $$('#classes li').map(plainText),
-        movies: () => $$('#movies li a').map(a => ({ title: plainText(a), href: a.href })),
-        neighbors: () => plainText($('#neighbors .fact')),
-    };
-
-    const moodFace = () => (root.dataset.mood === 'happy' ? ':)' : ':(');
-
+    const moodFace = (mood = root.dataset.mood) => (mood === 'happy' ? ':)' : ':(');
     const listClasses = () => page.classes().map(c => '  • ' + esc(c));
     const listMovies = () => page.movies().map((m, i) =>
         `  ${i + 1}. <a href="${esc(m.href)}" target="_blank" rel="noopener">${esc(m.title)}</a>`);
 
-    async function compileAndRun() {
+    // Exactly what clang 18 prints for this file (checked against the real compiler).
+    async function compile() {
         const line = $('#neighborsLine');
-        const source = visibleText(line).replace(/\s*\/\/.*$/, '');
-        const indent = ' '.repeat(indentOf(line) * 4);
-        const col = indent.length + source.indexOf('neighbors') + 1;
         const n = line.dataset.n;
-        const gutter = ' '.repeat(5) + ' | ';
-
+        const col = columnOf(line);
+        const source = ' '.repeat(indentOf(line) * 4) + visibleText(line);
         await echo('clang++ -std=c++17 -Wall abdullokh.cpp -o abdullokh', true);
         await wait(450);
         await printAll([
-            [`abdullokh.cpp:${n}:${col}: <b>warning:</b> private field 'neighbors' is not used [-Wunused-private-field]`, 'o-warn'],
-            [`${String(n).padStart(5)} | ${esc(indent + source)}`, 'o-dim'],
-            [`${gutter}${' '.repeat(col - 1)}<span class="o-warn">^~~~~~~~~</span>`, 'o-dim'],
+            [`<button class="o-loc" type="button" data-goto="neighborsLine" title="Go to line ${n}">abdullokh.cpp:${n}:${col}</button>: <b>warning:</b> private field 'neighbors' is not used [-Wunused-private-field]`, 'o-warn'],
+            [`${String(n).padStart(5)} | ${esc(source)}`, 'o-dim'],
+            [`${' '.repeat(5)} | ${' '.repeat(col - 1)}<span class="o-warn">^</span>`, 'o-dim'],
             ['1 warning generated.', 'o-dim'],
         ], 60);
-        await echo('./abdullokh', true);
-        await wait(250);
-        await printAll([
+        built = root.dataset.mood;
+    }
+
+    // What ./abdullokh prints — the same text introduce() builds in the fold.
+    // Like a real binary, it remembers the mood it was compiled with.
+    function program(mood = built) {
+        return printAll([
             [esc(page.title()), 'o-title'],
             esc(page.intro()),
             '',
@@ -427,21 +558,26 @@
             [esc(page.section('movies')) + ':', 'o-title'],
             ...listMovies(),
             '',
-            [`${esc(page.section('moods'))}: ${root.dataset.mood.toUpperCase()} ${moodFace()}`, 'o-title'],
+            [`${esc(page.section('moods'))}: ${mood.toUpperCase()} ${moodFace(mood)}`, 'o-title'],
             '',
             [esc(page.section('neighbors')) + ':', 'o-title'],
             '  ' + esc(page.neighbors()),
-            '',
-            ['Process finished with exit code 0', 'o-ok'],
         ], 45);
+    }
+
+    async function compileAndRun() {
+        await compile();
+        await echo('./abdullokh', true);
+        await wait(250);
+        await program();
     }
 
     async function ping(host) {
         if (host !== 'neighbors' && host !== 'neighbours') {
-            print(`usage: ping neighbors`, 'o-dim');
+            print('usage: ping neighbors', 'o-dim');
             return;
         }
-        print('PING neighbors (0.0.0.0): 56 data bytes');
+        print('PING neighbors: 56 data bytes');
         for (let i = 0; i < 4; i++) {
             await wait(650);
             print(`Request timeout for icmp_seq ${i}`, 'o-dim');
@@ -455,6 +591,13 @@
         ], 40);
     }
 
+    // The two headers abdullokh.cpp includes. With these, the file really compiles.
+    const HEADERS = {
+        'family/abdulaziz.hpp': ['#pragma once', '', 'class Abdulaziz {', "    // dad's members are private", '};'],
+        'iut/quarter.hpp': ['#pragma once', '', 'struct English {};', 'struct Math {};', 'struct Science {};', 'struct ComputerScience {};'],
+    };
+    const FILES = ['README.md', 'abdullokh.cpp', 'family/abdulaziz.hpp', 'happy.jpg', 'iut/quarter.hpp', 'sad.jpg'];
+
     // `cat README.md` prints the real file when the page is served (GitHub Pages);
     // opened straight from disk, fetch() is blocked, so fall back to the first lines.
     const readme = () => fetch('README.md')
@@ -466,15 +609,26 @@
         help: () => printAll([
             ['Commands:', 'o-dim'],
             '  <b>run</b>                compile &amp; run abdullokh.cpp',
+            '  <b>./abdullokh</b>        run it again',
             '  <b>whoami</b>             who wrote this file',
             '  <b>classes</b>            this quarter at IUT',
             '  <b>movies</b>             favorite movies',
             '  <b>mood</b> [happy|sad]   get or change my mood',
             '  <b>ping neighbors</b>     look for neighbors',
-            '  <b>ls</b>, <b>cat</b> README.md, <b>date</b>, <b>github</b>, <b>clear</b>, <b>exit</b>',
+            '  <b>ls</b>, <b>cat</b> &lt;file&gt;, <b>date</b>, <b>github</b>, <b>clear</b>, <b>exit</b>',
         ], 12),
         run: () => compileAndRun(),
-        './abdullokh': () => compileAndRun(),
+        './abdullokh': async () => {
+            if (!built) {
+                print('bash: ./abdullokh: No such file or directory', 'o-err');
+                print('# compile it first: run', 'o-dim');
+                return;
+            }
+            await program();
+            if (built !== root.dataset.mood) {
+                print(`# this binary was built with Mood::${built.toUpperCase()}; type run to rebuild`, 'o-dim');
+            }
+        },
         whoami: () => printAll([
             ['abdullokh', 'o-title'],
             '  namespace   Abdusamatov      <span class="o-dim">(family name)</span>',
@@ -484,7 +638,7 @@
         ], 20),
         classes: () => printAll([[esc(page.section('classes')) + ':', 'o-title'], ...listClasses()], 20),
         movies: () => printAll([[esc(page.section('movies')) + ':', 'o-title'], ...listMovies()], 20),
-        mood: async (arg, ctx) => {
+        mood: (arg, ctx) => {
             if (!arg) {
                 print(`mood = Mood::${root.dataset.mood.toUpperCase()};  <span class="o-dim">// ${moodFace()}</span>`);
                 return;
@@ -504,24 +658,36 @@
                 : 'mood = Mood::HAPPY;  <span class="o-dim">// colors restored</span>');
         },
         ping: arg => ping((arg || '').toLowerCase()),
-        ls: () => print('abdullokh.cpp  happy.jpg  sad.jpg  README.md'),
+        ls: () => {
+            const items = [
+                ...(built ? ['<span class="o-exe">abdullokh</span>'] : []),
+                'abdullokh.cpp',
+                '<span class="o-dir">family</span>',
+                'happy.jpg',
+                '<span class="o-dir">iut</span>',
+                'README.md',
+                'sad.jpg',
+            ];
+            print(items.join('  '));
+        },
         cat: arg => {
-            if (!arg) print('usage: cat README.md', 'o-dim');
-            else if (arg === 'README.md') return readme().then(rows => printAll(rows.map(esc), 30));
-            else if (arg === 'abdullokh.cpp') print('it is right above you ↑', 'o-dim');
-            else if (arg === 'happy.jpg' || arg === 'sad.jpg') print(`cat: ${esc(arg)}: binary file — try "mood ${arg.slice(0, -4)}"`, 'o-dim');
-            else print(`cat: ${esc(arg)}: No such file or directory`, 'o-err');
-            return undefined;
+            const file = (arg || '').replace(/^\.\//, '');
+            if (!file) return print('usage: cat &lt;file&gt;', 'o-dim');
+            if (file === 'README.md') return readme().then(rows => printAll(rows.map(esc), 30));
+            if (own(HEADERS, file)) return printAll(HEADERS[file].map(esc), 20);
+            if (file === 'abdullokh.cpp') return print('it is right above you ↑', 'o-dim');
+            if (file === 'family' || file === 'iut') return print(`cat: ${file}: Is a directory`, 'o-err');
+            if (file === 'abdullokh' && built) return print('cat: abdullokh: binary file — try ./abdullokh', 'o-dim');
+            if (file === 'happy.jpg' || file === 'sad.jpg') {
+                return print(`cat: ${file}: binary file — try "mood ${file.slice(0, -4)}"`, 'o-dim');
+            }
+            return print(`cat: ${esc(file)}: No such file or directory`, 'o-err');
         },
         date: () => {
             const opts = { timeZone: 'Asia/Tashkent', dateStyle: 'full', timeStyle: 'short' };
             try { print(`${new Date().toLocaleString('en-GB', opts)} — Tashkent`); } catch (e) { print(new Date().toString()); }
         },
-        github: () => {
-            const url = 'https://github.com/neabdullokh-code';
-            window.open(url, '_blank', 'noopener');
-            print(`opening <a href="${url}" target="_blank" rel="noopener">${url}</a>`);
-        },
+        github: () => print(`opening <a href="${GITHUB}" target="_blank" rel="noopener">${GITHUB}</a>`),
         sudo: async () => {
             print('[sudo] password for abdullokh: ');
             await wait(900);
@@ -535,12 +701,14 @@
 
     function exec(raw, { typed = false, from = null } = {}) {
         const cmd = raw.trim();
+        const [name = '', ...rest] = cmd.split(/\s+/);
+        const key = own(commands, name) ? name : own(commands, name.toLowerCase()) ? name.toLowerCase() : null;
+        // Open the new tab right away, while the click/Enter still counts as a user action.
+        if (key === 'github') window.open(GITHUB, '_blank', 'noopener');
         return enqueue(async () => {
             await echo(cmd, typed);
             if (!cmd) return;
-            const [name, ...rest] = cmd.split(/\s+/);
-            const handler = commands[name] || commands[name.toLowerCase()];
-            if (handler) await handler(rest.join(' '), { from });
+            if (key) await commands[key](rest.join(' '), { from });
             else print(`bash: ${esc(name)}: command not found — try <b>help</b>`, 'o-err');
         });
     }
@@ -562,18 +730,25 @@
             e.preventDefault();
             historyAt++;
             input.value = history[historyAt] || '';
-        } else if (e.key === 'Tab' && input.value.trim() && !input.value.includes(' ')) {
-            const matches = names.filter(name => name.startsWith(input.value.trim()));
+        } else if (e.key === 'Tab') {
+            const file = input.value.match(/^cat\s+(\S*)$/);
+            const word = file ? file[1] : input.value.trim();
+            if (!word || (!file && input.value.includes(' '))) return; // let Tab move focus
+            const matches = (file ? FILES : names).filter(option => option.startsWith(word));
             if (matches.length === 1) {
                 e.preventDefault();
-                input.value = matches[0] + ' ';
+                input.value = file ? `cat ${matches[0]}` : `${matches[0]} `;
             }
+        } else if (e.ctrlKey && e.key.toLowerCase() === 'l') {
+            e.preventDefault();
+            commands.clear();
         }
     });
 
-    // Clicking anywhere in the terminal focuses the prompt (unless you are selecting text or clicking a link).
+    // Clicking the terminal focuses the prompt. Not on touch screens: there a tap
+    // to read the output should not pop up the keyboard.
     term.addEventListener('click', e => {
-        if (e.target.closest('a') || String(window.getSelection())) return;
+        if (!finePointer.matches || e.target.closest('a, button') || String(window.getSelection())) return;
         input.focus({ preventScroll: true });
     });
 
@@ -581,7 +756,7 @@
         showPane('term');
         const r = panel.getBoundingClientRect();
         if (r.top > window.innerHeight - 120 || r.bottom < 0) {
-            panel.scrollIntoView({ block: 'start', behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+            panel.scrollIntoView({ block: 'start', behavior: smooth() });
         }
     }
 

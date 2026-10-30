@@ -142,6 +142,10 @@ button {
     border-radius: 4px;
 }
 
+[hidden] {
+    display: none !important;
+}
+
 .icons {
     display: none;
 }
@@ -334,6 +338,14 @@ button {
     cursor: pointer;
 }
 
+.tree-sub {
+    padding-left: 1.6rem;
+}
+
+.tree-file.tree-deep {
+    padding-left: 3.35rem;
+}
+
 .tree-file:hover,
 .outline a:hover {
     background: var(--hover);
@@ -348,6 +360,8 @@ button {
 .ico-cpp { color: var(--fn); }
 [data-mood="sad"] .ico-cpp { color: #5c5c5e; }
 .ico-img { color: var(--st); }
+.ico-hpp { color: var(--pp); }
+[data-mood="sad"] .ico-hpp { color: #5c5c5e; }
 .ico-doc { color: var(--muted); }
 
 .outline .o-sub a {
@@ -455,20 +469,31 @@ button {
 }
 
 /* One .l = one line of code. Line numbers come from a CSS counter,
-   indent guides are a background gradient sized by --i. */
-.l {
+   indent guides are a background gradient sized by --i.
+   An .inlay (the mood pictures) sits between lines and has no number. */
+.l,
+.inlay {
     position: relative;
     display: block;
-    min-height: calc(var(--fs) * var(--lh));
     padding: 0 1.5rem 0 calc(var(--gw) + var(--i) * var(--tab));
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    counter-increment: line;
     background-image: repeating-linear-gradient(to right, var(--guide) 0 1px, transparent 1px var(--tab));
     background-size: calc(var(--i) * var(--tab)) 100%;
     background-position: var(--gw) 0;
     background-repeat: no-repeat;
     scroll-margin: 2rem 0;
+}
+
+.l {
+    min-height: calc(var(--fs) * var(--lh));
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    counter-increment: line;
+}
+
+/* Hidden lines of a folded block still count, so the numbers jump like in an IDE. */
+.fold-gap {
+    display: block;
+    height: 0;
 }
 
 .l::before {
@@ -534,6 +559,7 @@ button {
 
 .code a.s::after {
     content: '↗';
+    content: '↗' / '';
     display: inline-block;
     margin-left: .3ch;
     font-size: .8em;
@@ -614,12 +640,11 @@ button {
 .sec {
     display: flex;
     align-items: baseline;
-    gap: 1ch;
 }
 
 .sec > .c {
     flex-shrink: 0;
-    white-space: nowrap;
+    white-space: pre;
 }
 
 .sec-title {
@@ -632,18 +657,18 @@ button {
     content: '';
     flex: 1;
     align-self: center;
+    margin-left: 1ch;
     border-top: 1px dashed var(--border);
 }
 
 /* ---------- Moods ---------- */
 
-.l-media {
+.inlay {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
     padding-top: .6rem;
     padding-bottom: .9rem;
-    white-space: normal;
 }
 
 .mood-card {
@@ -660,6 +685,14 @@ button {
 
 .mood-card:hover {
     transform: translateY(-3px);
+}
+
+.mood-card.flash {
+    animation: card-flash 1.6s var(--ease);
+}
+
+@keyframes card-flash {
+    30% { box-shadow: 0 0 0 6px var(--sel), var(--shadow); }
 }
 
 .mood-card img {
@@ -737,7 +770,7 @@ button {
     cursor: help;
 }
 
-.squiggle:focus-visible {
+.squiggle:focus {
     outline: none;
     background: var(--hover);
 }
@@ -771,7 +804,7 @@ button {
 }
 
 .squiggle:hover ~ .tip,
-.squiggle:focus-visible ~ .tip {
+.squiggle:focus ~ .tip {
     opacity: 1;
     transform: none;
 }
@@ -840,10 +873,80 @@ button {
     height: 13px;
 }
 
+.gi-fold {
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    top: calc((var(--fs) * var(--lh) - 18px) / 2);
+    left: calc(var(--gw) - 1.7rem);
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+}
+
+.gi-fold:hover {
+    background: var(--hover);
+    color: var(--text);
+}
+
+.gi-fold svg {
+    width: 13px;
+    height: 13px;
+    transform: rotate(-90deg);
+    transition: transform .2s var(--ease);
+}
+
+.fold-line.is-open .gi-fold svg {
+    transform: none;
+}
+
+.fold-pill {
+    margin: 0 .3ch;
+    padding: 0 .6ch;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--hover);
+    color: var(--muted);
+    font: inherit;
+    line-height: 1.35;
+    cursor: pointer;
+}
+
+.fold-pill:hover {
+    border-color: var(--muted);
+    color: var(--text);
+}
+
+/* Ctrl+click-style links inside the code: open a header, go to a definition */
+.tok-link {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    line-height: inherit;
+    text-decoration: underline dotted;
+    text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.tok-link:hover {
+    text-decoration-style: solid;
+    text-decoration-color: currentColor;
+}
+
 /* ---------- Footer inside the file ---------- */
 
 .code-foot hr {
-    margin: 1.25rem 1.5rem 1.25rem var(--gw);
+    position: absolute;
+    top: 50%;
+    left: var(--gw);
+    right: 1.5rem;
+    margin: 0;
     border: 0;
     border-top: 1px dashed var(--border);
 }
@@ -985,6 +1088,19 @@ button {
 .o-err   { color: var(--err); }
 .o-ok    { color: var(--run); }
 .o-title { font-weight: 700; }
+.o-dir   { color: var(--fn); font-weight: 700; }
+.o-exe   { color: var(--run); font-weight: 700; }
+
+.o-loc {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
 
 .term-in {
     display: flex;
@@ -1212,7 +1328,8 @@ body::after {
         padding: 1rem 0 1.5rem;
     }
 
-    .l {
+    .l,
+    .inlay {
         padding-right: .9rem;
         scroll-margin: 5rem 0 4rem;
     }
@@ -1232,7 +1349,8 @@ body::after {
         top: calc((var(--fs) * var(--lh) - 12px) / 2);
     }
 
-    .gi-run {
+    .gi-run,
+    .gi-fold {
         left: calc(var(--gw) - 1.05rem);
         width: 16px;
         height: 16px;
@@ -1247,8 +1365,12 @@ body::after {
         font-size: 1.4rem;
     }
 
-    .l-media {
+    .inlay {
         gap: .75rem;
+    }
+
+    .code-foot hr {
+        right: .9rem;
     }
 
     .mood-card {
@@ -1304,6 +1426,13 @@ body::after {
         animation: none !important;
         transition: none !important;
         scroll-behavior: auto !important;
+    }
+
+    .is-switching *,
+    .is-switching *::before,
+    .is-switching *::after,
+    .is-switching body {
+        transition: none !important;
     }
 
     .rain {

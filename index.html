@@ -31,6 +31,7 @@
     <symbol id="i-branch" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="4.5" cy="3.5" r="1.6"/><circle cx="4.5" cy="12.5" r="1.6"/><circle cx="11.5" cy="5" r="1.6"/><path d="M4.5 5.1v5.8M11.5 6.6c0 2.6-2.4 3.4-6.4 4.4"/></g></symbol>
     <symbol id="i-folder" viewBox="0 0 16 16"><path d="M1.8 4.3a1 1 0 0 1 1-1h3.3l1.5 1.5h5.6a1 1 0 0 1 1 1v6.6a1 1 0 0 1-1 1H2.8a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
     <symbol id="i-cpp" viewBox="0 0 16 16"><rect x="1.5" y="1.5" width="13" height="13" rx="3" fill="currentColor"/><path d="M8.2 5.6a2.6 2.6 0 1 0 0 4.8" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M10 8h2.6M11.3 6.7v2.6" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-hpp" viewBox="0 0 16 16"><rect x="1.5" y="1.5" width="13" height="13" rx="3" fill="currentColor"/><path d="M6.2 4.6v6.8M6.2 8.3c.4-.9 1.1-1.4 2-1.4 1.2 0 1.9.8 1.9 2.1v2.4" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></symbol>
     <symbol id="i-image" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><rect x="2" y="2.8" width="12" height="10.4" rx="1.6"/><circle cx="5.8" cy="6.3" r="1.1"/><path d="M2.4 11.8l3.4-3.3 2.4 2.3 1.9-1.8 3.5 3.3"/></g></symbol>
     <symbol id="i-doc" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M4 1.8h5.2L12 4.6v9.6H4z"/><path d="M9 1.8v3h3M6 8h4M6 10.5h4"/></g></symbol>
     <symbol id="i-chev" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -59,10 +60,14 @@
             <p class="side-title">Explorer</p>
             <ul class="tree">
                 <li class="tree-dir"><svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg><svg class="ico" aria-hidden="true"><use href="#i-folder"/></svg>neabdullokh-code.github.io</li>
+                <li class="tree-dir tree-sub"><svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg><svg class="ico" aria-hidden="true"><use href="#i-folder"/></svg>family</li>
+                <li><button class="tree-file tree-deep" type="button" data-cmd="cat family/abdulaziz.hpp" title="Show in the terminal"><svg class="ico ico-hpp" aria-hidden="true"><use href="#i-hpp"/></svg>abdulaziz.hpp</button></li>
+                <li class="tree-dir tree-sub"><svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg><svg class="ico" aria-hidden="true"><use href="#i-folder"/></svg>iut</li>
+                <li><button class="tree-file tree-deep" type="button" data-cmd="cat iut/quarter.hpp" title="Show in the terminal"><svg class="ico ico-hpp" aria-hidden="true"><use href="#i-hpp"/></svg>quarter.hpp</button></li>
                 <li><a class="tree-file is-active" href="#top"><svg class="ico ico-cpp" aria-hidden="true"><use href="#i-cpp"/></svg>abdullokh.cpp</a></li>
-                <li><button class="tree-file" type="button" data-cmd="mood happy"><svg class="ico ico-img" aria-hidden="true"><use href="#i-image"/></svg>happy.jpg</button></li>
-                <li><button class="tree-file" type="button" data-cmd="mood sad"><svg class="ico ico-img" aria-hidden="true"><use href="#i-image"/></svg>sad.jpg</button></li>
-                <li><button class="tree-file" type="button" data-cmd="cat README.md"><svg class="ico ico-doc" aria-hidden="true"><use href="#i-doc"/></svg>README.md</button></li>
+                <li><button class="tree-file" type="button" data-reveal="happy" title="Show in the code"><svg class="ico ico-img" aria-hidden="true"><use href="#i-image"/></svg>happy.jpg</button></li>
+                <li><button class="tree-file" type="button" data-cmd="cat README.md" title="Show in the terminal"><svg class="ico ico-doc" aria-hidden="true"><use href="#i-doc"/></svg>README.md</button></li>
+                <li><button class="tree-file" type="button" data-reveal="sad" title="Show in the code"><svg class="ico ico-img" aria-hidden="true"><use href="#i-image"/></svg>sad.jpg</button></li>
             </ul>
         </div>
         <nav class="outline" aria-label="Outline">
@@ -73,6 +78,7 @@
                 <li class="o-sub"><a href="#classes" data-crumb="Abdusamatov › Abdullokh › My Classes">My Classes<span class="o-hint">7</span></a></li>
                 <li class="o-sub"><a href="#movies" data-crumb="Abdusamatov › Abdullokh › My Favorite Movies">My Favorite Movies<span class="o-hint">3</span></a></li>
                 <li class="o-sub"><a href="#moods" data-crumb="Abdusamatov › Abdullokh › My Moods">My Moods<span class="o-hint" data-mood-text>HAPPY</span></a></li>
+                <li class="o-sub o-desk"><a href="#introduce" data-crumb="Abdusamatov › Abdullokh › introduce()"><i class="sym sym-fn" aria-hidden="true">m</i>introduce()</a></li>
                 <li class="o-sub"><a href="#neighbors" data-crumb="Abdusamatov › Abdullokh › My Neighbors">My Neighbors<span class="o-hint">0</span></a></li>
                 <li><a href="#main" data-crumb="main()"><i class="sym sym-fn" aria-hidden="true">f</i>main()</a></li>
             </ul>
@@ -82,7 +88,6 @@
     <main class="editor">
         <div class="tabs">
             <a class="tab is-active" href="#top"><svg class="ico ico-cpp" aria-hidden="true"><use href="#i-cpp"/></svg>abdullokh.cpp</a>
-            <button class="tab" type="button" data-cmd="cat README.md"><svg class="ico ico-doc" aria-hidden="true"><use href="#i-doc"/></svg>README.md</button>
             <p class="breadcrumbs" id="breadcrumbs" aria-hidden="true">abdullokh.cpp</p>
         </div>
 
@@ -102,9 +107,8 @@
             <div class="l"></div>
             <div class="l"><span class="pp">#include</span> <span class="s">&lt;iostream&gt;</span></div>
             <div class="l"><span class="pp">#include</span> <span class="s">&lt;string&gt;</span></div>
-            <div class="l"><span class="pp">#include</span> <span class="s">&lt;vector&gt;</span></div>
-            <div class="l"><span class="pp">#include</span> <span class="s">"iut/quarter.hpp"</span></div>
-            <div class="l"><span class="pp">#include</span> <span class="s">"family/abdulaziz.hpp"</span>   <span class="c">// dad</span></div>
+            <div class="l"><span class="pp">#include</span> <button class="tok-link s" type="button" data-cmd="cat iut/quarter.hpp" title="Open iut/quarter.hpp">"iut/quarter.hpp"</button></div>
+            <div class="l"><span class="pp">#include</span> <button class="tok-link s" type="button" data-cmd="cat family/abdulaziz.hpp" title="Open family/abdulaziz.hpp">"family/abdulaziz.hpp"</button>   <span class="c">// dad</span></div>
             <div class="l"></div>
             <div class="l" id="ns"><span class="k">namespace</span> <span class="t">Abdusamatov</span> {   <span class="c">// family name → namespace</span></div>
             <div class="l"></div>
@@ -112,13 +116,13 @@
             <div class="l"></div>
             <div class="l"><span class="c">// "Abdulaziz o‘g‘li" means "son of Abdulaziz".</span></div>
             <div class="l"><span class="c">// In C++ we call that inheritance.</span></div>
-            <div class="l" id="me"><span class="k">class</span> <span class="t">Abdullokh</span> : <span class="k">public</span> <span class="t">Abdulaziz</span> {</div>
+            <div class="l" id="me"><span class="k">class</span> <span class="t">Abdullokh</span> : <span class="k">public</span> <button class="tok-link t" type="button" data-cmd="cat family/abdulaziz.hpp" title="Go to definition">Abdulaziz</button> {</div>
             <div class="l"><span class="k">public</span>:</div>
             <div class="l" style="--i:1"><span class="t">std</span>::<span class="t">string</span> passion = <span class="s">"programming"</span>;</div>
             <div class="l"></div>
 
             <section id="classes" aria-labelledby="h-classes">
-                <h2 class="l sec" style="--i:1" id="h-classes"><span class="c" aria-hidden="true">// ──</span><span class="sec-title">My Classes This Quarter at IUT</span></h2>
+                <h2 class="l sec" style="--i:1" id="h-classes"><span class="c" aria-hidden="true">// ── </span><span class="sec-title">My Classes This Quarter at IUT</span></h2>
                 <ul class="list">
                     <li class="l" style="--i:1"><span class="sr">Academic English</span><span aria-hidden="true"><span class="k">class</span> <span class="t">AcademicEnglish</span> : <span class="k">public</span> <span class="t">English</span> {};</span></li>
                     <li class="l" style="--i:1"><span class="sr">Academic English Reading</span><span aria-hidden="true"><span class="k">class</span> <span class="t">AcademicEnglishReading</span> : <span class="k">public</span> <span class="t">AcademicEnglish</span> {};</span></li>
@@ -133,7 +137,7 @@
             <div class="l"></div>
 
             <section id="movies" aria-labelledby="h-movies">
-                <h2 class="l sec" style="--i:1" id="h-movies"><span class="c" aria-hidden="true">// ──</span><span class="sec-title">My Favorite Movies</span></h2>
+                <h2 class="l sec" style="--i:1" id="h-movies"><span class="c" aria-hidden="true">// ── </span><span class="sec-title">My Favorite Movies</span></h2>
                 <div class="l" style="--i:1" aria-hidden="true"><span class="t">std</span>::<span class="t">string</span> favoriteMovies[<span class="n">3</span>] = {</div>
                 <ol class="list">
                     <li class="l" style="--i:2"><span class="hint" aria-hidden="true">[0]</span><a class="s" href="https://www.imdb.com/title/tt0944947/" target="_blank" rel="noopener"><span aria-hidden="true">"</span>Game of Thrones<span aria-hidden="true">"</span></a>,</li>
@@ -146,9 +150,9 @@
             <div class="l"></div>
 
             <section id="moods" aria-labelledby="h-moods">
-                <h2 class="l sec" style="--i:1" id="h-moods"><span class="c" aria-hidden="true">// ──</span><span class="sec-title">My Moods</span></h2>
+                <h2 class="l sec" style="--i:1" id="h-moods"><span class="c" aria-hidden="true">// ── </span><span class="sec-title">My Moods</span></h2>
                 <div class="l" style="--i:1" aria-hidden="true"><span class="k">enum class</span> <span class="t">Mood</span> { <span class="e">HAPPY</span>, <span class="e">SAD</span> };</div>
-                <div class="l l-media" style="--i:1">
+                <div class="inlay" style="--i:1">
                     <figure class="mood-card" data-pick="happy">
                         <img src="happy.jpg" alt="Happy: a white dog grinning with a yellow flower in its mouth" width="564" height="562">
                         <figcaption><span><span aria-hidden="true">Mood::</span>HAPPY</span><span class="now">current</span></figcaption>
@@ -162,11 +166,14 @@
             </section>
 
             <div class="l"></div>
+            <div class="l fold-line" style="--i:1" id="introduce"><button class="gi gi-fold" type="button" data-fold aria-expanded="false" aria-label="Unfold introduce()" title="Unfold"><svg aria-hidden="true"><use href="#i-chev"/></svg></button><span class="k">void</span> <span class="f">introduce</span>() <span class="k">const</span> {<button class="fold-pill" type="button" data-fold aria-expanded="false" aria-label="Show the folded body of introduce()" title="Folded code — click to unfold">⋯</button><span class="fold-close">}</span>   <span class="c">// prints this page</span></div>
+            <span class="fold-gap" data-lines="12" style="counter-increment: line 12" aria-hidden="true"></span>
+            <div class="l"></div>
             <div class="l"><span class="k">private</span>:</div>
 
             <section id="neighbors" aria-labelledby="h-neighbors">
-                <h2 class="l sec" style="--i:1" id="h-neighbors"><span class="c" aria-hidden="true">// ──</span><span class="sec-title">Fun Facts About My Neighbors</span></h2>
-                <p class="l has-warn" style="--i:1" id="neighborsLine"><svg class="gi gi-warn" aria-hidden="true"><use href="#i-warn"/></svg><span aria-hidden="true"><span class="t">std</span>::<span class="t">vector</span>&lt;<span class="t">Neighbor</span>&gt; </span><span class="squiggle" tabindex="0" aria-describedby="tip-neighbors">neighbors</span><span aria-hidden="true">;   </span><span class="c"><span aria-hidden="true">// </span><span class="fact">I have no neighbors.</span></span><span class="tip" role="tooltip" id="tip-neighbors"><span class="tip-head"><svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>Private field 'neighbors' is never used</span><span class="tip-row">Quick fix: <b>Add neighbor…</b> — no candidates found nearby.</span><span class="tip-row tip-dim">Try <code>ping neighbors</code> in the terminal.</span></span></p>
+                <h2 class="l sec" style="--i:1" id="h-neighbors"><span class="c" aria-hidden="true">// ── </span><span class="sec-title">Fun Facts About My Neighbors</span></h2>
+                <p class="l has-warn" style="--i:1" id="neighborsLine"><svg class="gi gi-warn" aria-hidden="true"><use href="#i-warn"/></svg><span aria-hidden="true"><span class="k">int</span> </span><span class="squiggle" tabindex="0" aria-describedby="tip-neighbors">neighbors</span><span aria-hidden="true"> = <span class="n">0</span>;   </span><span class="c"><span aria-hidden="true">// </span><span class="fact">I have no neighbors.</span></span><span class="tip" role="tooltip" id="tip-neighbors"><span class="tip-head"><svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>Private field 'neighbors' is not used</span><span class="tip-row">Quick fix: <b>Add neighbor…</b> — no candidates found nearby.</span><span class="tip-row tip-dim">Try <code>ping neighbors</code> in the terminal.</span></span></p>
             </section>
 
             <div class="l">};</div>
@@ -175,12 +182,12 @@
             <div class="l"></div>
             <div class="l" id="main"><button class="gi gi-run" id="gutterRun" type="button" aria-label="Run main()" title="Run main()"><svg aria-hidden="true"><use href="#i-play"/></svg></button><span class="k">int</span> <span class="f">main</span>() {</div>
             <div class="l" style="--i:1"><span class="t">Abdusamatov</span>::<span class="t">Abdullokh</span> me;</div>
-            <div class="l" style="--i:1"><span class="t">std</span>::cout &lt;&lt; me;   <span class="c">// press ▶ Run to see the output</span></div>
+            <div class="l" style="--i:1">me.<button class="tok-link f" type="button" data-goto="introduce" title="Go to definition">introduce</button>();   <span class="c">// press ▶ Run to see the output</span></div>
             <div class="l" style="--i:1"><span class="k">return</span> <span class="n">0</span>;</div>
             <div class="l">}</div>
 
             <footer class="code-foot">
-                <hr>
+                <div class="l"><hr></div>
                 <p class="l"><span class="c"><span aria-hidden="true">// </span>My GitHub Page URL: <a href="https://neabdullokh-code.github.io/">https://neabdullokh-code.github.io</a></span></p>
             </footer>
 
@@ -190,7 +197,7 @@
             <div class="panel-bar">
                 <div class="panel-tabs" role="tablist">
                     <button role="tab" type="button" id="tab-term" aria-controls="term" aria-selected="true">Terminal</button>
-                    <button role="tab" type="button" id="tab-problems" aria-controls="problems" aria-selected="false" tabindex="-1">Problems <span class="badge">1</span></button>
+                    <button role="tab" type="button" id="tab-problems" aria-controls="problems" aria-selected="false">Problems <span class="badge">1</span></button>
                 </div>
                 <button class="panel-min" id="panelMin" type="button" aria-label="Collapse panel" aria-expanded="true"><svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg></button>
             </div>
@@ -204,7 +211,7 @@
             <div class="problems" id="problems" role="tabpanel" aria-labelledby="tab-problems" hidden>
                 <button class="problem" type="button" data-goto="neighborsLine">
                     <svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>
-                    <span>Private field 'neighbors' is never used</span>
+                    <span>Private field 'neighbors' is not used</span>
                     <span class="where">abdullokh.cpp<span data-line-of="neighborsLine"></span></span>
                 </button>
             </div>
