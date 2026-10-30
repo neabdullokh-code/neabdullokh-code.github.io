@@ -1,109 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-mood="happy">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abdullokh Abdusamatov</title>
-    <meta name="description" content="Personal page of Abdusamatov Abdullokh — IUT student who loves programming.">
-    <meta name="theme-color" content="#0b1020">
-    <meta property="og:title" content="Abdullokh Abdusamatov">
-    <meta property="og:description" content="IUT student who loves programming.">
+    <title>Abdullokh Abdusamatov :)</title>
+    <meta name="description" content="About Abdusamatov Abdullokh Abdulaziz o‘g‘li — a personal page written as a C++ file. Press Run.">
+    <meta name="theme-color" content="#efe6d1">
+    <meta property="og:title" content="abdullokh.cpp">
+    <meta property="og:description" content="About Abdusamatov Abdullokh — a personal page written as a C++ file.">
     <meta property="og:url" content="https://neabdullokh-code.github.io/">
     <meta property="og:image" content="https://neabdullokh-code.github.io/happy.jpg">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236d8cff'/%3E%3Cstop offset='1' stop-color='%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='26' font-weight='700' text-anchor='middle' fill='white'%3EAA%3C/text%3E%3C/svg%3E">
+    <link rel="icon" id="favicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23f2b705'/%3E%3Ctext x='32' y='43' text-anchor='middle' font-family='Menlo,Consolas,monospace' font-size='30' font-weight='700' fill='%232f2a20' transform='rotate(90 32 32)'%3E:)%3C/text%3E%3C/svg%3E">
+    <script>
+        // Restore the last mood before the first paint, so a sad visitor never sees a flash of sunshine.
+        try { if (localStorage.getItem('mood') === 'sad') document.documentElement.dataset.mood = 'sad'; } catch (e) {}
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
 
-    <header class="topbar">
-        <a class="logo" href="#top" aria-label="Back to top">AA</a>
-        <nav aria-label="Sections">
-            <a href="#classes">Classes</a>
-            <a href="#movies">Movies</a>
-            <a href="#moods">Moods</a>
-            <a href="#neighbors">Neighbors</a>
-        </nav>
+<svg class="icons" aria-hidden="true">
+    <symbol id="i-play" viewBox="0 0 16 16"><path d="M4.5 2.9v10.2a.7.7 0 0 0 1.07.6l8.1-5.1a.7.7 0 0 0 0-1.2l-8.1-5.1a.7.7 0 0 0-1.07.6z" fill="currentColor"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="8" cy="8" r="2.8"/><path d="M8 1.6v1.3M8 13.1v1.3M1.6 8h1.3M13.1 8h1.3M3.5 3.5l.9.9M11.6 11.6l.9.9M3.5 12.5l.9-.9M11.6 4.4l.9-.9"/></g></symbol>
+    <symbol id="i-rain" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.6 10h6.6a2.5 2.5 0 0 0 .3-5A3.7 3.7 0 0 0 4.4 5.6 2.2 2.2 0 0 0 4.6 10z"/><path d="M5.6 12.2l-.6 1.6M8.6 12.2l-.6 1.6M11.4 12.2l-.6 1.6"/></g></symbol>
+    <symbol id="i-warn" viewBox="0 0 16 16"><path d="M7.1 2.4a1 1 0 0 1 1.8 0l5.7 9.9a1 1 0 0 1-.9 1.5H2.3a1 1 0 0 1-.9-1.5z" fill="currentColor"/><path d="M8 5.9v3.3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="11.4" r=".9" fill="#fff"/></symbol>
+    <symbol id="i-branch" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="4.5" cy="3.5" r="1.6"/><circle cx="4.5" cy="12.5" r="1.6"/><circle cx="11.5" cy="5" r="1.6"/><path d="M4.5 5.1v5.8M11.5 6.6c0 2.6-2.4 3.4-6.4 4.4"/></g></symbol>
+    <symbol id="i-folder" viewBox="0 0 16 16"><path d="M1.8 4.3a1 1 0 0 1 1-1h3.3l1.5 1.5h5.6a1 1 0 0 1 1 1v6.6a1 1 0 0 1-1 1H2.8a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-cpp" viewBox="0 0 16 16"><rect x="1.5" y="1.5" width="13" height="13" rx="3" fill="currentColor"/><path d="M8.2 5.6a2.6 2.6 0 1 0 0 4.8" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/><path d="M10 8h2.6M11.3 6.7v2.6" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-image" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><rect x="2" y="2.8" width="12" height="10.4" rx="1.6"/><circle cx="5.8" cy="6.3" r="1.1"/><path d="M2.4 11.8l3.4-3.3 2.4 2.3 1.9-1.8 3.5 3.3"/></g></symbol>
+    <symbol id="i-doc" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="M4 1.8h5.2L12 4.6v9.6H4z"/><path d="M9 1.8v3h3M6 8h4M6 10.5h4"/></g></symbol>
+    <symbol id="i-chev" viewBox="0 0 16 16"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<div class="ide">
+
+    <header class="titlebar">
+        <a class="brand" href="#top" aria-label="Back to top"><span class="face" aria-hidden="true"><span class="face-happy">:)</span><span class="face-sad">:(</span></span></a>
+        <p class="crumbs"><span class="crumb-repo">neabdullokh-code.github.io</span><span class="sep" aria-hidden="true">/</span><strong>abdullokh.cpp</strong></p>
+        <div class="actions">
+            <button class="btn btn-mood" id="moodToggle" type="button" title="Switch mood">
+                <svg class="ico ico-happy" aria-hidden="true"><use href="#i-sun"/></svg>
+                <svg class="ico ico-sad" aria-hidden="true"><use href="#i-rain"/></svg>
+                <span class="btn-label" data-mood-text>HAPPY</span>
+            </button>
+            <button class="btn btn-run" id="runBtn" type="button" title="Compile and run abdullokh.cpp">
+                <svg class="ico" aria-hidden="true"><use href="#i-play"/></svg>
+                Run
+            </button>
+        </div>
     </header>
 
-    <main class="container" id="top">
+    <aside class="sidebar">
+        <div class="explorer">
+            <p class="side-title">Explorer</p>
+            <ul class="tree">
+                <li class="tree-dir"><svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg><svg class="ico" aria-hidden="true"><use href="#i-folder"/></svg>neabdullokh-code.github.io</li>
+                <li><a class="tree-file is-active" href="#top"><svg class="ico ico-cpp" aria-hidden="true"><use href="#i-cpp"/></svg>abdullokh.cpp</a></li>
+                <li><button class="tree-file" type="button" data-cmd="mood happy"><svg class="ico ico-img" aria-hidden="true"><use href="#i-image"/></svg>happy.jpg</button></li>
+                <li><button class="tree-file" type="button" data-cmd="mood sad"><svg class="ico ico-img" aria-hidden="true"><use href="#i-image"/></svg>sad.jpg</button></li>
+                <li><button class="tree-file" type="button" data-cmd="cat README.md"><svg class="ico ico-doc" aria-hidden="true"><use href="#i-doc"/></svg>README.md</button></li>
+            </ul>
+        </div>
+        <nav class="outline" aria-label="Outline">
+            <p class="side-title">Outline</p>
+            <ul>
+                <li class="o-desk"><a href="#ns" data-crumb="Abdusamatov"><i class="sym sym-ns" aria-hidden="true">N</i>Abdusamatov<span class="o-hint">namespace</span></a></li>
+                <li class="o-desk"><a href="#me" data-crumb="Abdusamatov › Abdullokh"><i class="sym sym-cls" aria-hidden="true">C</i>Abdullokh<span class="o-hint">: Abdulaziz</span></a></li>
+                <li class="o-sub"><a href="#classes" data-crumb="Abdusamatov › Abdullokh › My Classes">My Classes<span class="o-hint">7</span></a></li>
+                <li class="o-sub"><a href="#movies" data-crumb="Abdusamatov › Abdullokh › My Favorite Movies">My Favorite Movies<span class="o-hint">3</span></a></li>
+                <li class="o-sub"><a href="#moods" data-crumb="Abdusamatov › Abdullokh › My Moods">My Moods<span class="o-hint" data-mood-text>HAPPY</span></a></li>
+                <li class="o-sub"><a href="#neighbors" data-crumb="Abdusamatov › Abdullokh › My Neighbors">My Neighbors<span class="o-hint">0</span></a></li>
+                <li><a href="#main" data-crumb="main()"><i class="sym sym-fn" aria-hidden="true">f</i>main()</a></li>
+            </ul>
+        </nav>
+    </aside>
 
-        <section class="hero">
-            <div class="avatar" aria-hidden="true">AA</div>
-            <p class="eyebrow">Student at IUT</p>
-            <h1>About Abdusamatov Abdullokh <span>Abdulaziz o'gli</span></h1>
-            <p class="intro">I love <strong>programming</strong>.</p>
-            <div class="hero-links">
-                <a class="btn btn-primary" href="https://github.com/neabdullokh-code" target="_blank" rel="noopener">GitHub profile</a>
-                <a class="btn" href="#classes">What I study</a>
-            </div>
-        </section>
+    <main class="editor">
+        <div class="tabs">
+            <a class="tab is-active" href="#top"><svg class="ico ico-cpp" aria-hidden="true"><use href="#i-cpp"/></svg>abdullokh.cpp</a>
+            <button class="tab" type="button" data-cmd="cat README.md"><svg class="ico ico-doc" aria-hidden="true"><use href="#i-doc"/></svg>README.md</button>
+            <p class="breadcrumbs" id="breadcrumbs" aria-hidden="true">abdullokh.cpp</p>
+        </div>
 
-        <div class="grid">
-            <section class="card" id="classes">
-                <h2><span class="icon" aria-hidden="true">📚</span> My Classes This Quarter at IUT</h2>
-                <ul class="classes">
-                    <li><span class="tag tag-lang">English</span> Academic English</li>
-                    <li><span class="tag tag-lang">English</span> Academic English Reading</li>
-                    <li><span class="tag tag-math">Math</span> Calculus</li>
-                    <li><span class="tag tag-sci">Science</span> Physics</li>
-                    <li><span class="tag tag-sci">Science</span> Physics Experiment</li>
-                    <li><span class="tag tag-cs">CS</span> Object-Oriented Programming</li>
-                    <li><span class="tag tag-cs">CS</span> Introduction to Information Technology</li>
+        <article class="code" id="code" aria-label="abdullokh.cpp" tabindex="0">
+
+            <header class="doc" id="top">
+                <div class="l c" aria-hidden="true">/**</div>
+                <h1 class="l doc-line doc-title"><span class="star" aria-hidden="true">*</span>About Abdusamatov Abdullokh <em>Abdulaziz o‘g‘li</em></h1>
+                <p class="l doc-line doc-intro"><span class="star" aria-hidden="true">*</span>I love <strong>programming</strong>.</p>
+                <div class="l doc-line" aria-hidden="true"><span class="star">*</span></div>
+                <p class="l doc-line doc-tag"><span class="star" aria-hidden="true">*</span><span class="at">@author</span> Abdullokh Abdusamatov</p>
+                <p class="l doc-line doc-tag"><span class="star" aria-hidden="true">*</span><span class="at">@school</span> IUT</p>
+                <p class="l doc-line doc-tag"><span class="star" aria-hidden="true">*</span><span class="at">@see</span>    <a href="https://github.com/neabdullokh-code" target="_blank" rel="noopener">github.com/neabdullokh-code</a></p>
+                <div class="l c" aria-hidden="true"> */</div>
+            </header>
+
+            <div class="l"></div>
+            <div class="l"><span class="pp">#include</span> <span class="s">&lt;iostream&gt;</span></div>
+            <div class="l"><span class="pp">#include</span> <span class="s">&lt;string&gt;</span></div>
+            <div class="l"><span class="pp">#include</span> <span class="s">&lt;vector&gt;</span></div>
+            <div class="l"><span class="pp">#include</span> <span class="s">"iut/quarter.hpp"</span></div>
+            <div class="l"><span class="pp">#include</span> <span class="s">"family/abdulaziz.hpp"</span>   <span class="c">// dad</span></div>
+            <div class="l"></div>
+            <div class="l" id="ns"><span class="k">namespace</span> <span class="t">Abdusamatov</span> {   <span class="c">// family name → namespace</span></div>
+            <div class="l"></div>
+            <div class="l"><span class="k">struct</span> <span class="t">Neighbor</span>;   <span class="c">// declared, never defined</span></div>
+            <div class="l"></div>
+            <div class="l"><span class="c">// "Abdulaziz o‘g‘li" means "son of Abdulaziz".</span></div>
+            <div class="l"><span class="c">// In C++ we call that inheritance.</span></div>
+            <div class="l" id="me"><span class="k">class</span> <span class="t">Abdullokh</span> : <span class="k">public</span> <span class="t">Abdulaziz</span> {</div>
+            <div class="l"><span class="k">public</span>:</div>
+            <div class="l" style="--i:1"><span class="t">std</span>::<span class="t">string</span> passion = <span class="s">"programming"</span>;</div>
+            <div class="l"></div>
+
+            <section id="classes" aria-labelledby="h-classes">
+                <h2 class="l sec" style="--i:1" id="h-classes"><span class="c" aria-hidden="true">// ──</span><span class="sec-title">My Classes This Quarter at IUT</span></h2>
+                <ul class="list">
+                    <li class="l" style="--i:1"><span class="sr">Academic English</span><span aria-hidden="true"><span class="k">class</span> <span class="t">AcademicEnglish</span> : <span class="k">public</span> <span class="t">English</span> {};</span></li>
+                    <li class="l" style="--i:1"><span class="sr">Academic English Reading</span><span aria-hidden="true"><span class="k">class</span> <span class="t">AcademicEnglishReading</span> : <span class="k">public</span> <span class="t">AcademicEnglish</span> {};</span></li>
+                    <li class="l" style="--i:1"><span class="sr">Calculus</span><span aria-hidden="true"><span class="k">class</span> <span class="t">Calculus</span> : <span class="k">public</span> <span class="t">Math</span> {};</span></li>
+                    <li class="l" style="--i:1"><span class="sr">Physics</span><span aria-hidden="true"><span class="k">class</span> <span class="t">Physics</span> : <span class="k">public</span> <span class="t">Science</span> {};</span></li>
+                    <li class="l" style="--i:1"><span class="sr">Physics Experiment</span><span aria-hidden="true"><span class="k">class</span> <span class="t">PhysicsExperiment</span> : <span class="k">public</span> <span class="t">Physics</span> {};</span></li>
+                    <li class="l" style="--i:1"><span class="sr">Object-Oriented Programming</span><span aria-hidden="true"><span class="k">class</span> <span class="t">ObjectOrientedProgramming</span> : <span class="k">public</span> <span class="t">ComputerScience</span> {};</span></li>
+                    <li class="l" style="--i:1"><span class="sr">Introduction to Information Technology</span><span aria-hidden="true"><span class="k">class</span> <span class="t">IntroductionToInformationTechnology</span> : <span class="k">public</span> <span class="t">ComputerScience</span> {};</span></li>
                 </ul>
             </section>
 
-            <section class="card" id="movies">
-                <h2><span class="icon" aria-hidden="true">🎬</span> My Favorite Movies</h2>
-                <ol class="movies">
-                    <li>
-                        <a href="https://www.imdb.com/title/tt0944947/" target="_blank" rel="noopener">Game of Thrones</a>
-                        <span class="meta">Series · 2011–2019</span>
-                    </li>
-                    <li>
-                        <a href="https://www.imdb.com/title/tt4052886/" target="_blank" rel="noopener">Lucifer</a>
-                        <span class="meta">Series · 2016–2021</span>
-                    </li>
-                    <li>
-                        <a href="https://www.imdb.com/title/tt0076759/" target="_blank" rel="noopener">Star Wars</a>
-                        <span class="meta">Film saga · since 1977</span>
-                    </li>
-                </ol>
-            </section>
-        </div>
+            <div class="l"></div>
 
-        <section class="card" id="moods">
-            <h2><span class="icon" aria-hidden="true">🎭</span> My Moods</h2>
-            <div class="moods">
-                <figure class="mood mood-happy">
-                    <img src="happy.jpg" alt="A white dog grinning with a yellow flower in its mouth" width="564" height="562" loading="lazy">
-                    <figcaption>Happy</figcaption>
-                </figure>
-                <figure class="mood mood-sad">
-                    <img src="sad.jpg" alt="Close-up of a frightened face with a tear running down the cheek" width="736" height="726" loading="lazy">
-                    <figcaption>Sad</figcaption>
-                </figure>
+            <section id="movies" aria-labelledby="h-movies">
+                <h2 class="l sec" style="--i:1" id="h-movies"><span class="c" aria-hidden="true">// ──</span><span class="sec-title">My Favorite Movies</span></h2>
+                <div class="l" style="--i:1" aria-hidden="true"><span class="t">std</span>::<span class="t">string</span> favoriteMovies[<span class="n">3</span>] = {</div>
+                <ol class="list">
+                    <li class="l" style="--i:2"><span class="hint" aria-hidden="true">[0]</span><a class="s" href="https://www.imdb.com/title/tt0944947/" target="_blank" rel="noopener"><span aria-hidden="true">"</span>Game of Thrones<span aria-hidden="true">"</span></a>,</li>
+                    <li class="l" style="--i:2"><span class="hint" aria-hidden="true">[1]</span><a class="s" href="https://www.imdb.com/title/tt4052886/" target="_blank" rel="noopener"><span aria-hidden="true">"</span>Lucifer<span aria-hidden="true">"</span></a>,</li>
+                    <li class="l" style="--i:2"><span class="hint" aria-hidden="true">[2]</span><a class="s" href="https://www.imdb.com/title/tt0076759/" target="_blank" rel="noopener"><span aria-hidden="true">"</span>Star Wars<span aria-hidden="true">"</span></a>,   <span class="c" aria-hidden="true">// may the source be with you</span></li>
+                </ol>
+                <div class="l" style="--i:1" aria-hidden="true">};</div>
+            </section>
+
+            <div class="l"></div>
+
+            <section id="moods" aria-labelledby="h-moods">
+                <h2 class="l sec" style="--i:1" id="h-moods"><span class="c" aria-hidden="true">// ──</span><span class="sec-title">My Moods</span></h2>
+                <div class="l" style="--i:1" aria-hidden="true"><span class="k">enum class</span> <span class="t">Mood</span> { <span class="e">HAPPY</span>, <span class="e">SAD</span> };</div>
+                <div class="l l-media" style="--i:1">
+                    <figure class="mood-card" data-pick="happy">
+                        <img src="happy.jpg" alt="Happy: a white dog grinning with a yellow flower in its mouth" width="564" height="562">
+                        <figcaption><span><span aria-hidden="true">Mood::</span>HAPPY</span><span class="now">current</span></figcaption>
+                    </figure>
+                    <figure class="mood-card" data-pick="sad">
+                        <img src="sad.jpg" alt="Sad: a close-up of a frightened face with a tear running down the cheek" width="736" height="726">
+                        <figcaption><span><span aria-hidden="true">Mood::</span>SAD</span><span class="now">current</span></figcaption>
+                    </figure>
+                </div>
+                <div class="l" style="--i:1"><span class="t">Mood</span> mood = <button class="mood-value nudge" id="moodValue" type="button" aria-label="Change mood, currently happy"><span class="t">Mood</span>::<span class="e" data-mood-text>HAPPY</span></button>;   <span class="c">// ← click to change</span></div>
+            </section>
+
+            <div class="l"></div>
+            <div class="l"><span class="k">private</span>:</div>
+
+            <section id="neighbors" aria-labelledby="h-neighbors">
+                <h2 class="l sec" style="--i:1" id="h-neighbors"><span class="c" aria-hidden="true">// ──</span><span class="sec-title">Fun Facts About My Neighbors</span></h2>
+                <p class="l has-warn" style="--i:1" id="neighborsLine"><svg class="gi gi-warn" aria-hidden="true"><use href="#i-warn"/></svg><span aria-hidden="true"><span class="t">std</span>::<span class="t">vector</span>&lt;<span class="t">Neighbor</span>&gt; </span><span class="squiggle" tabindex="0" aria-describedby="tip-neighbors">neighbors</span><span aria-hidden="true">;   </span><span class="c"><span aria-hidden="true">// </span><span class="fact">I have no neighbors.</span></span><span class="tip" role="tooltip" id="tip-neighbors"><span class="tip-head"><svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>Private field 'neighbors' is never used</span><span class="tip-row">Quick fix: <b>Add neighbor…</b> — no candidates found nearby.</span><span class="tip-row tip-dim">Try <code>ping neighbors</code> in the terminal.</span></span></p>
+            </section>
+
+            <div class="l">};</div>
+            <div class="l"></div>
+            <div class="l">}   <span class="c">// namespace Abdusamatov</span></div>
+            <div class="l"></div>
+            <div class="l" id="main"><button class="gi gi-run" id="gutterRun" type="button" aria-label="Run main()" title="Run main()"><svg aria-hidden="true"><use href="#i-play"/></svg></button><span class="k">int</span> <span class="f">main</span>() {</div>
+            <div class="l" style="--i:1"><span class="t">Abdusamatov</span>::<span class="t">Abdullokh</span> me;</div>
+            <div class="l" style="--i:1"><span class="t">std</span>::cout &lt;&lt; me;   <span class="c">// press ▶ Run to see the output</span></div>
+            <div class="l" style="--i:1"><span class="k">return</span> <span class="n">0</span>;</div>
+            <div class="l">}</div>
+
+            <footer class="code-foot">
+                <hr>
+                <p class="l"><span class="c"><span aria-hidden="true">// </span>My GitHub Page URL: <a href="https://neabdullokh-code.github.io/">https://neabdullokh-code.github.io</a></span></p>
+            </footer>
+
+        </article>
+
+        <section class="panel" id="panel" aria-label="Terminal and problems">
+            <div class="panel-bar">
+                <div class="panel-tabs" role="tablist">
+                    <button role="tab" type="button" id="tab-term" aria-controls="term" aria-selected="true">Terminal</button>
+                    <button role="tab" type="button" id="tab-problems" aria-controls="problems" aria-selected="false" tabindex="-1">Problems <span class="badge">1</span></button>
+                </div>
+                <button class="panel-min" id="panelMin" type="button" aria-label="Collapse panel" aria-expanded="true"><svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg></button>
+            </div>
+            <div class="term" id="term" role="tabpanel" aria-labelledby="tab-term">
+                <div class="term-out" id="termOut" aria-live="polite"></div>
+                <form class="term-in" id="termForm" autocomplete="off">
+                    <label class="prompt" for="termInput">abdullokh@iut:~$</label>
+                    <input id="termInput" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" enterkeyhint="go" placeholder="type help">
+                </form>
+            </div>
+            <div class="problems" id="problems" role="tabpanel" aria-labelledby="tab-problems" hidden>
+                <button class="problem" type="button" data-goto="neighborsLine">
+                    <svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>
+                    <span>Private field 'neighbors' is never used</span>
+                    <span class="where">abdullokh.cpp<span data-line-of="neighborsLine"></span></span>
+                </button>
             </div>
         </section>
-
-        <section class="card neighbors" id="neighbors">
-            <h2><span class="icon" aria-hidden="true">🏠</span> Fun Facts About My Neighbors</h2>
-            <p>I have no neighbors.</p>
-        </section>
-
-        <hr>
-
-        <footer class="footer">
-            <p class="footer-link">My GitHub Page URL: <a href="https://neabdullokh-code.github.io/" target="_blank" rel="noopener">https://neabdullokh-code.github.io</a></p>
-            <p class="muted">© <span id="year">2026</span> Abdusamatov Abdullokh</p>
-        </footer>
-
     </main>
 
-    <script>
-        document.getElementById('year').textContent = new Date().getFullYear();
-    </script>
+    <footer class="statusbar">
+        <span class="sb-item"><svg class="ico" aria-hidden="true"><use href="#i-branch"/></svg>main</span>
+        <button class="sb-item" type="button" data-goto="neighborsLine" title="1 warning"><svg class="ico" aria-hidden="true"><use href="#i-warn"/></svg>1</button>
+        <span class="sb-spacer"></span>
+        <span class="sb-item sb-wide" id="cursorPos">Ln 1, Col 1</span>
+        <span class="sb-item sb-wide">C++17</span>
+        <span class="sb-item sb-wide">UTF-8</span>
+        <span class="sb-item" id="clock" title="Local time in Tashkent">Tashkent</span>
+        <button class="sb-item sb-mood" type="button" id="sbMood" title="Switch mood">
+            <svg class="ico ico-happy" aria-hidden="true"><use href="#i-sun"/></svg>
+            <svg class="ico ico-sad" aria-hidden="true"><use href="#i-rain"/></svg>
+            <span data-mood-text>HAPPY</span>
+        </button>
+    </footer>
+
+</div>
+
+<canvas class="rain" id="rain" aria-hidden="true"></canvas>
+
 </body>
 </html>
