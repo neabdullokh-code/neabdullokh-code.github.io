@@ -3,61 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Abdusamatov Abdullokh</title>
+    <title>Abdullokh Abdusamatov</title>
+    <meta name="description" content="Personal page of Abdusamatov Abdullokh — IUT student who loves programming.">
+    <meta name="theme-color" content="#0b1020">
+    <meta property="og:title" content="Abdullokh Abdusamatov">
+    <meta property="og:description" content="IUT student who loves programming.">
+    <meta property="og:url" content="https://neabdullokh-code.github.io/">
+    <meta property="og:image" content="https://neabdullokh-code.github.io/happy.jpg">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%236d8cff'/%3E%3Cstop offset='1' stop-color='%23f472b6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='42' font-family='Arial,sans-serif' font-size='26' font-weight='700' text-anchor='middle' fill='white'%3EAA%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <div class="container">
-        <h1>About Abdusamatov Abdullokh Abdulaziz o'gli</h1>
-        <p class="intro">I love <strong>programing</strong>.</p>
+    <header class="topbar">
+        <a class="logo" href="#top" aria-label="Back to top">AA</a>
+        <nav aria-label="Sections">
+            <a href="#classes">Classes</a>
+            <a href="#movies">Movies</a>
+            <a href="#moods">Moods</a>
+            <a href="#neighbors">Neighbors</a>
+        </nav>
+    </header>
 
-        <div class="content-wrapper">
-            <div class="section">
-                <h2>My Classes This Quarter at IUT</h2>
-                <ul>
-                    <li>Academic English</li>
-                    <li>Academic English Reading</li>
-                    <li>Calculus</li>
-                    <li>Physics</li>
-                    <li>Physics Experiment</li>
-                    <li>Object-Oriented Programming</li>
-                    <li>Introduction to Information Technology</li>
+    <main class="container" id="top">
+
+        <section class="hero">
+            <div class="avatar" aria-hidden="true">AA</div>
+            <p class="eyebrow">Student at IUT</p>
+            <h1>About Abdusamatov Abdullokh <span>Abdulaziz o'gli</span></h1>
+            <p class="intro">I love <strong>programming</strong>.</p>
+            <div class="hero-links">
+                <a class="btn btn-primary" href="https://github.com/neabdullokh-code" target="_blank" rel="noopener">GitHub profile</a>
+                <a class="btn" href="#classes">What I study</a>
+            </div>
+        </section>
+
+        <div class="grid">
+            <section class="card" id="classes">
+                <h2><span class="icon" aria-hidden="true">📚</span> My Classes This Quarter at IUT</h2>
+                <ul class="classes">
+                    <li><span class="tag tag-lang">English</span> Academic English</li>
+                    <li><span class="tag tag-lang">English</span> Academic English Reading</li>
+                    <li><span class="tag tag-math">Math</span> Calculus</li>
+                    <li><span class="tag tag-sci">Science</span> Physics</li>
+                    <li><span class="tag tag-sci">Science</span> Physics Experiment</li>
+                    <li><span class="tag tag-cs">CS</span> Object-Oriented Programming</li>
+                    <li><span class="tag tag-cs">CS</span> Introduction to Information Technology</li>
                 </ul>
-            </div>
+            </section>
 
-            <div class="section">
-                <h2>My Favorite Movies</h2>
-                <ol>
-                    <li><a href="https://www.imdb.com/title/tt0944947/" target="_blank">Game of Thrones</a></li>
-                    <li>Lucifer</li>
-                    <li>Star Wars</li>
+            <section class="card" id="movies">
+                <h2><span class="icon" aria-hidden="true">🎬</span> My Favorite Movies</h2>
+                <ol class="movies">
+                    <li>
+                        <a href="https://www.imdb.com/title/tt0944947/" target="_blank" rel="noopener">Game of Thrones</a>
+                        <span class="meta">Series · 2011–2019</span>
+                    </li>
+                    <li>
+                        <a href="https://www.imdb.com/title/tt4052886/" target="_blank" rel="noopener">Lucifer</a>
+                        <span class="meta">Series · 2016–2021</span>
+                    </li>
+                    <li>
+                        <a href="https://www.imdb.com/title/tt0076759/" target="_blank" rel="noopener">Star Wars</a>
+                        <span class="meta">Film saga · since 1977</span>
+                    </li>
                 </ol>
-            </div>
+            </section>
         </div>
 
-        <div class="section">
-            <h2>My Moods</h2>
+        <section class="card" id="moods">
+            <h2><span class="icon" aria-hidden="true">🎭</span> My Moods</h2>
             <div class="moods">
-                <div>
-                    <p>Happy:</p>
-                    <img src="happy.jpg" alt="Happy mood" width="200">
-                </div>
-                <div>
-                    <p>Sad:</p>
-                    <img src="sad.jpg" alt="Sad mood" width="200">
-                </div>
+                <figure class="mood mood-happy">
+                    <img src="happy.jpg" alt="A white dog grinning with a yellow flower in its mouth" width="564" height="562" loading="lazy">
+                    <figcaption>Happy</figcaption>
+                </figure>
+                <figure class="mood mood-sad">
+                    <img src="sad.jpg" alt="Close-up of a frightened face with a tear running down the cheek" width="736" height="726" loading="lazy">
+                    <figcaption>Sad</figcaption>
+                </figure>
             </div>
-        </div>
+        </section>
 
-        <div class="section">
-            <h2>Fun Facts About My Neighbors</h2>
+        <section class="card neighbors" id="neighbors">
+            <h2><span class="icon" aria-hidden="true">🏠</span> Fun Facts About My Neighbors</h2>
             <p>I have no neighbors.</p>
-        </div>
+        </section>
 
         <hr>
-        <p class="footer-link">My GitHub Page URL: <a href="http://neabdullokh-code.github.io" target="_blank">http://neabdullokh-code.github.io</a></p>
-    </div>
 
+        <footer class="footer">
+            <p class="footer-link">My GitHub Page URL: <a href="https://neabdullokh-code.github.io/" target="_blank" rel="noopener">https://neabdullokh-code.github.io</a></p>
+            <p class="muted">© <span id="year">2026</span> Abdusamatov Abdullokh</p>
+        </footer>
+
+    </main>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
